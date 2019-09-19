@@ -59,7 +59,7 @@ export module Serial {
       }
       return result;
     } else {
-      var oresult: object = Object.create(Object.getPrototypeOf(o));
+      var oresult: any = Object.create(Object.getPrototypeOf(o));
       oresult.constructor();
       for (var prop in o) {
         oresult[prop] = copy(o[prop]);
@@ -83,7 +83,7 @@ export module Serial {
     [ 4,-1,-1,-1,10,-1,-1,-1,-1,-1,-1,-1], // 7 = center front & x & y
   ];
 
-  function reorderLabelsIn(labels, align) {
+  function reorderLabelsIn(labels: any, align: any) {
     var ret: Array<any> = [];
     for (var i = 0; i < labels.length; ++i) {
       if (labels[i]) ret[labelMap[align][i]] = labels[i];
@@ -91,7 +91,7 @@ export module Serial {
     return ret;
   }
 
-  function deserializeError(msg, data?) {
+  function deserializeError(msg: any, data?: any) {
     throw "Error: " + msg + (data ? ":\n  " + JSON5.stringify(data) : "");
   }
 
@@ -207,7 +207,10 @@ export module Serial {
           );
         }
         for (let prop in kbd.meta) {
-          if (rows[r][prop]) kbd.meta[prop] = rows[r][prop];
+          if (rows[r][prop]) {
+            const meta = kbd.meta as any;
+            meta[prop] = rows[r][prop];
+          }
         }
       } else {
         deserializeError("unexpected", rows[r]);
